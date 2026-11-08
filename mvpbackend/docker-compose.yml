@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: lixocerto-db
+    environment:
+      POSTGRES_DB: lixocerto
+      POSTGRES_USER: lixocerto
+      POSTGRES_PASSWORD: lixocerto
+    ports:
+      - "5432:5432"
+    volumes:
+      - lixocerto-data:/var/lib/postgresql/data
+
+volumes:
+  lixocerto-data:
