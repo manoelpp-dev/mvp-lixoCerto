@@ -3,8 +3,8 @@ package com.lixocerto.mvpbackend.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tipo_de_lixo")
-public class TipoDeLixo {
+@Table(name = "Lixo")
+public class Lixo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,9 @@ public class TipoDeLixo {
     @JoinColumn(name = "categoria_lixo_id", nullable = false)
     private CategoriaLixo categoria;
 
+    @Column(nullable = false, length = 50)
+    private String nome;
+
     public Long getId() { return id; }
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
@@ -30,4 +33,6 @@ public class TipoDeLixo {
     public void setInstrucaoDescarte(InstrucaoDescarte instrucaoDescarte) { this.instrucaoDescarte = instrucaoDescarte; }
     public CategoriaLixo getCategoria() { return categoria; }
     public void setCategoria(CategoriaLixo categoria) { this.categoria = categoria; }
+    public String getNome() { return nome;}
+    public void setNome(String nome) { this.nome = nome;}
 }
