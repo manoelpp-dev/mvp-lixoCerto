@@ -1,5 +1,6 @@
 package com.lixocerto.mvpbackend.services;
 
+import java.util.List;
 import com.lixocerto.mvpbackend.model.InstrucaoDescarte;
 import com.lixocerto.mvpbackend.repositories.InstrucaoDescarteRepository;
 import com.lixocerto.mvpbackend.repositories.LixoRepository;
@@ -12,7 +13,7 @@ public class InstrucaoDescarteService {
     private final InstrucaoDescarteRepository repository;
     private final LixoRepository lixoRepository;
 
-    public instrucaoDescarteService(InstrucaoDescarteRepository repository, LixoRepository lixoRepository) {
+    public InstrucaoDescarteService(InstrucaoDescarteRepository repository, LixoRepository lixoRepository) {
         this.repository = repository;
         this.lixoRepository = lixoRepository;
     }
@@ -42,7 +43,7 @@ public class InstrucaoDescarteService {
 
     public void deletar(Long id) {
         InstrucaoDescarte existente = buscarPorId(id);
-        boolean emUso = lixoRepository.findAll().stream().anyMatch(1 -> 1.getInstrucaoDescarte().getId().equals(id));
+        boolean emUso = lixoRepository.existsByInstrucaoDescarteId(id);
         if (emUso){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Não é possível excluir: existem tipos de lixo com esta instrução de descarte.");
         }

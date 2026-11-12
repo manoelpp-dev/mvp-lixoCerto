@@ -46,7 +46,7 @@ public class CategoriaLixoService {
 
     public void deletar(Long id) {
         CategoriaLixo existente = buscarPorId(id);
-        boolean emUso = lixoRepository.findAll().stream().anyMatch(1 -> 1.getCategoria().getId().equals(id));
+        boolean emUso = lixoRepository.findAll().stream().anyMatch(lixo -> lixo.getCategoria().getId().equals(id));
         if (emUso) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Não é possível excluir: existem tipos de lixo nesta categoria.");
         }
