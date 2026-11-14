@@ -41,7 +41,7 @@ public class CategoriaLixoController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleter(@PathVariable Long id){
+    public void deletar(@PathVariable Long id){
         service.deletar(id);
     }
 }
