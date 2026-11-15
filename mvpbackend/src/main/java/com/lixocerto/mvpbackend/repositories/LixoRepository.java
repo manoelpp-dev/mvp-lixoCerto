@@ -1,3 +1,4 @@
+
 package com.lixocerto.mvpbackend.repositories;
 
 import com.lixocerto.mvpbackend.model.Lixo;
@@ -7,7 +8,11 @@ import java.util.Optional;
 
 public interface LixoRepository extends JpaRepository<Lixo, Long> {
 
-    boolean existsByInstrucaoDescarteId(Long id);
+    boolean existsByCategoriaId(Long categoriaId);
+
+    boolean existsByInstrucaoDescarteId(Long instrucaoId);
+
+    boolean existsByInstrucaoDescarteIdAndIdNot(Long instrucaoId, Long id);
 
     Optional<Lixo> findFirstByNomeContainingIgnoreCase(String nome);
 }

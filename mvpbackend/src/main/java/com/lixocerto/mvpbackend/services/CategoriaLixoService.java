@@ -1,3 +1,4 @@
+
 package com.lixocerto.mvpbackend.services;
 
 import com.lixocerto.mvpbackend.model.CategoriaLixo;
@@ -9,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@Service 
+@Service
 public class CategoriaLixoService {
 
     private final CategoriaLixoRepository repository;
@@ -23,12 +24,14 @@ public class CategoriaLixoService {
 
     public List<CategoriaLixo> listar() {
         return repository.findAll();
-    
     }
 
     public CategoriaLixo buscarPorId(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException( HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Categoria não encontrada"
+                ));
     }
 
     public CategoriaLixo criar(CategoriaLixo categoria) {
@@ -36,37 +39,46 @@ public class CategoriaLixoService {
         return repository.save(categoria);
     }
 
-    public CategoriaLixo atualizar (Long id, CategoriaLixo dados) {
-        validar(dados);
+    public CategoriaLixo atualizar(Long id, CategoriaLixo dados) {
         CategoriaLixo existente = buscarPorId(id);
+        validar(dados);
+
         existente.setDescricao(dados.getDescricao());
         existente.setTipo_de_lixo(dados.getTipo_de_lixo());
+
         return repository.save(existente);
     }
 
     public void deletar(Long id) {
         CategoriaLixo existente = buscarPorId(id);
-        boolean emUso = lixoRepository.findAll().stream().anyMatch(lixo -> lixo.getCategoria().getId().equals(id));
-        if (emUso) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Não é possível excluir: existem tipos de lixo nesta categoria.");
+
+        if (lixoRepository.existsByCategoriaId(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Não é possível excluir: existem tipos de lixo nesta categoria."
+            );
         }
+
         repository.delete(existente);
     }
 
     private void validar(CategoriaLixo categoria) {
         String descricao = categoria.getDescricao();
-        if(descricao == null || descricao.isBlank()) {
-            throw erro("A descrição é obrigatória");
 
+        if (descricao == null || descricao.isBlank()) {
+            throw erro("A descrição é obrigatória");
         }
+
         if (descricao.length() > 100) {
             throw erro("A descrição deve ter no máximo 100 caracteres");
-
         }
+
         String tipo = categoria.getTipo_de_lixo();
+
         if (tipo == null || tipo.isBlank()) {
             throw erro("O tipo de lixo é obrigatório");
         }
+
         if (tipo.length() > 30) {
             throw erro("O tipo de lixo deve ter no máximo 30 caracteres");
         }
