@@ -1,5 +1,7 @@
 package com.lixocerto.mvpbackend.dto;
 
+import com.lixocerto.mvpbackend.model.Lixo;
+
 public record LixoResponseDto(
         Long id,
         String nome,

@@ -1,8 +1,11 @@
 package com.lixocerto.mvpbackend.controllers;
 
 import com.lixocerto.mvpbackend.model.InstrucaoDescarte;
+import com.lixocerto.mvpbackend.services.InstrucaoDescarteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/intrucaoDescarte")

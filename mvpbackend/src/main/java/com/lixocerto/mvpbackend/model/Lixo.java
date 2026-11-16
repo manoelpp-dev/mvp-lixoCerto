@@ -26,6 +26,13 @@ public class Lixo {
     @Column(nullable = false, length = 50)
     private String nome;
 
+    // Palavras-chave/sinônimos separados por vírgula (usadas na busca por texto)
+    @Column(name = "palavras_chave", length = 1000)
+    private String palavrasChave;
+
+    // true = úmido/molhado, false = seco, null = não se aplica (select de apoio no front)
+    private Boolean umido;
+
     public Long getId() { return id; }
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
@@ -33,6 +40,10 @@ public class Lixo {
     public void setInstrucaoDescarte(InstrucaoDescarte instrucaoDescarte) { this.instrucaoDescarte = instrucaoDescarte; }
     public CategoriaLixo getCategoria() { return categoria; }
     public void setCategoria(CategoriaLixo categoria) { this.categoria = categoria; }
-    public String getNome() { return nome;}
-    public void setNome(String nome) { this.nome = nome;}
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getPalavrasChave() { return palavrasChave; }
+    public void setPalavrasChave(String palavrasChave) { this.palavrasChave = palavrasChave; }
+    public Boolean getUmido() { return umido; }
+    public void setUmido(Boolean umido) { this.umido = umido; }
 }

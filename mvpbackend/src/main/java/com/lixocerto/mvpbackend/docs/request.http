@@ -1,0 +1,84 @@
+### Requisições de exemplo (IntelliJ HTTP Client). Rode a API antes.
+
+### Busca por texto: caminho feliz
+GET http://localhost:8080/lixos/busca?q=garrafa PET recém-tomada
+
+### Busca por texto: vários candidatos (Vidro em primeiro)
+GET http://localhost:8080/lixos/busca?q=garrafa de cerveja
+
+### Busca por texto: sem resultado (cai nos selects de apoio)
+GET http://localhost:8080/lixos/busca?q=xyzabc
+
+### Opções do select (categorias: Orgânico, Reciclável, Perigoso, Rejeito)
+GET http://localhost:8080/categorias
+
+### Lixos filtrados pelos selects (categoria e seco/úmido; ambos opcionais)
+GET http://localhost:8080/lixos?categoriaId=2&umido=false
+
+### Todos os lixos
+GET http://localhost:8080/lixos
+
+### Um lixo por id
+GET http://localhost:8080/lixos/1
+
+### Identificação por foto (coloque uma imagem em docs/garrafa.jpg)
+POST http://localhost:8080/lixos/identificar-foto
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="foto"; filename="garrafa.jpg"
+Content-Type: image/jpeg
+
+< ./garrafa.jpg
+--WebAppBoundary--
+
+### Ecopontos (todos)
+GET http://localhost:8080/pontos-descarte
+
+### Ecopontos por bairro
+GET http://localhost:8080/pontos-descarte?bairro=Niterói
+
+### Ecopontos incluindo os desativados
+GET http://localhost:8080/pontos-descarte?incluirInativos=true
+
+### Cadastrar ecoponto
+POST http://localhost:8080/pontos-descarte
+Content-Type: application/json
+
+{
+  "nome": "Ecoponto Exemplo",
+  "descricao": "Recebe óleo de cozinha, eletrônicos, pilhas e entulho de pequeno volume",
+  "cidade": "Canoas",
+  "rua": "Rua Exemplo",
+  "num": 100,
+  "cep": "92010-000",
+  "bairro": "Centro",
+  "latitude": -29.9178,
+  "longitude": -51.1839,
+  "status": "ATIVO"
+}
+
+### Cadastrar instrução (cada lixo precisa de uma instrução própria; o id volta na resposta)
+POST http://localhost:8080/instrucoes
+Content-Type: application/json
+
+{
+  "instrucao": "Esvazie e descarte na coleta seletiva.",
+  "sugestaoReciclagem": "Pode virar novos objetos de plástico.",
+  "corLixo": "Vermelho"
+}
+
+> {% client.global.set("instrucaoId", response.body.id); %}
+
+### Cadastrar lixo (categoriaId 2 = Reciclável na carga inicial; usa a instrução criada acima)
+POST http://localhost:8080/lixos
+Content-Type: application/json
+
+{
+  "nome": "Copo descartável",
+  "descricao": "Copos de plástico usados",
+  "categoriaId": 1,
+  "instrucaoDescarteId": {{instrucaoId}},
+  "palavrasChave": "copo, copo descartável, copinho",
+  "umido": false
+}
