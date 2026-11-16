@@ -1,9 +1,10 @@
-
 package com.lixocerto.mvpbackend.controllers;
 
+import com.lixocerto.mvpbackend.dto.BuscaLixoResponseDto;
 import com.lixocerto.mvpbackend.dto.LixoDetalheDTO;
 import com.lixocerto.mvpbackend.dto.LixoRequestDto;
 import com.lixocerto.mvpbackend.dto.LixoResponseDto;
+import com.lixocerto.mvpbackend.services.BuscaLixoService;
 import com.lixocerto.mvpbackend.services.IdentificacaoFotoService;
 import com.lixocerto.mvpbackend.services.LixoService;
 
@@ -16,30 +17,43 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/lixos")
-@CrossOrigin(origins = "*")
 public class LixoController {
 
     private final LixoService service;
+    private final BuscaLixoService buscaService;
     private final IdentificacaoFotoService identificacaoFotoService;
 
     public LixoController(
             LixoService service,
+            BuscaLixoService buscaService,
             IdentificacaoFotoService identificacaoFotoService) {
         this.service = service;
+        this.buscaService = buscaService;
         this.identificacaoFotoService = identificacaoFotoService;
     }
 
-    // CRUD - Lixos
+    // ---------- Consulta ----------
 
+    /** Filtros opcionais (selects de apoio): /api/lixos?categoriaId=1&umido=false */
     @GetMapping
-    public List<LixoResponseDto> listar() {
-        return service.listar();
+    public List<LixoResponseDto> listar(
+            @RequestParam(required = false) Long categoriaId,
+            @RequestParam(required = false) Boolean umido) {
+        return service.listar(categoriaId, umido);
+    }
+
+    /** Busca por texto, resolvida pelo sistema (sem IA): /api/lixos/busca?q=garrafa pet recém-tomada */
+    @GetMapping("/busca")
+    public BuscaLixoResponseDto buscar(@RequestParam String q) {
+        return buscaService.buscar(q);
     }
 
     @GetMapping("/{id}")
     public LixoResponseDto buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
+
+    // ---------- CRUD ----------
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -60,7 +74,7 @@ public class LixoController {
         service.deletar(id);
     }
 
-    // Identificação por foto
+    // ---------- Identificação por foto (IA) ----------
 
     @PostMapping(
             value = "/identificar-foto",

@@ -31,9 +31,13 @@ public class PontoDescarte {
     @Column(length = 100)
     private String bairro;
 
-    // opcionais, para mostrar o ponto no mapa
+    // opcionais, para mostrar o ponto no mapa (no hemisfério sul/oeste os valores são negativos)
     private Double latitude;
     private Double longitude;
+
+    // ATIVO ou INATIVO (pontos desativados não aparecem na listagem padrão)
+    @Column(length = 20)
+    private String status = "ATIVO";
 
     public Long getId() { return id; }
     public String getNome() { return nome; }
@@ -54,4 +58,6 @@ public class PontoDescarte {
     public void setLatitude(Double latitude) { this.latitude = latitude; }
     public Double getLongitude() { return longitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

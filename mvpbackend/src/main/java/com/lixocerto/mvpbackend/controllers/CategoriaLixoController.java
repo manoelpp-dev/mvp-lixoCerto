@@ -2,6 +2,7 @@ package com.lixocerto.mvpbackend.controllers;
 
 
 import com.lixocerto.mvpbackend.model.CategoriaLixo;
+import com.lixocerto.mvpbackend.services.CategoriaLixoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

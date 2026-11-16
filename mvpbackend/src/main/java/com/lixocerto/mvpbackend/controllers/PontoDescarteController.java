@@ -2,8 +2,11 @@ package com.lixocerto.mvpbackend.controllers;
 
 
 import com.lixocerto.mvpbackend.model.PontoDescarte;
+import com.lixocerto.mvpbackend.services.PontoDescarteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pontoDescarte")

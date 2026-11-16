@@ -4,6 +4,8 @@ public record LixoRequestDto(
         String nome,
         String descricao,
         Long categoriaId,
-        Long intrucaoDescarteId
+        Long instrucaoDescarteId,
+        String palavrasChave,
+        Boolean umido
 ) {
 }
